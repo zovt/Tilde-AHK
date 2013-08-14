@@ -21,11 +21,11 @@ GetWindowOptionsFromIni()
     DefaultPortWindowHorizontalSize := Monitor1Width/3
     IniRead, PaddingVertical, Config.ini, Windows, PaddingVertical
     IniRead, PaddingHorizontal, Config.ini, Windows, PaddingHorizontal
-    IniRead, PortWindowHorizontalSize, Config.ini, Windows, DefaultPortWindowHorizontalSize
+    IniRead, PortWindowHorizontalSize, Config.ini, Windows, PortWindowHorizontalSize, DefaultPortWindowHorizontalSize
     IniRead, MaxWindowsInPort, Config.ini, Settings, MaxWindowsInPort, 1
 }
 
 CalculateWindowSizes()
 {
-    PortWindowVerticalSize := Monitor1Height/MaxWindowsInPort
+    PortWindowVerticalSize := (Monitor1Height-((MaxWindowsInPort+1)*PaddingVertical))/MaxWindowsInPort
 }

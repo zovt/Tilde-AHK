@@ -1,6 +1,6 @@
 #Include Functions.ahk
 
 ;Configure Tilde on load
-ConfigureTilde()
+GetMonitorsAndResolutionsFromIni()
 
 #A::MsgBox, A was hit

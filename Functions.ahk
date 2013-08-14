@@ -1,5 +1,5 @@
-;Read the file Config.ini to configure Tilde
-ConfigureTilde()
+;Get Monitors and Resolutions from Config.ini
+GetMonitorsAndResolutionsFromIni()
 {
     IniRead, Monitor1Height, Config.ini, Resolution, Monitor1Height
     IniRead, Monitor1Width, Config.ini, Resolution, Monitor1Width
@@ -14,3 +14,6 @@ WriteConfig()
 {
 
 }
+
+;Set Up Window Dimensions
+

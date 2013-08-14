@@ -9,7 +9,7 @@ A basic config file example is shown as Default.ini. It includes values for a du
 
 Todo
 =====
-[x] Make the Repo!
-[ ] Setup basic functions and options in Config.ini
-[ ] Implement tiling
-[ ] Add more options and customization features 
+- [x] Make the Repo!
+- [ ] Setup basic functions and options in Config.ini
+- [ ] Implement tiling
+- [ ] Add more options and customization features 

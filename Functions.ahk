@@ -2,13 +2,14 @@
 GetMonitorsAndResolutionsFromIni()
 {
     Global 
+    IniRead, TotalMonitors, Config.ini, Monitors, TotalMonitors
+    Loop, %TotalMonitors%
+    {
+        ArrayCount +=1
+        IniRead, Monitor%ArrayCount%WorkingHeight, Config.ini, Resolution, Monitor%ArrayCount%WorkingHeight, 0
+        IniRead, Monitor%ArrayCount%WorkingWidth, Config.ini, Resolution, Monitor%ArrayCount%WorkingWidth, 0
 
-    IniRead, Monitor1WorkingHeight, Config.ini, Resolution, Monitor1WorkingHeight, 0
-    IniRead, Monitor1WorkingWidth, Config.ini, Resolution, Monitor1WorkingWidth, 0
-    IniRead, Monitor2WorkingHeight, Config.ini, Resolution, Monitor2WorkingHeight, 0
-    IniRead, Monitor2WorkingWidth, Config.ini, Resolution, Monitor2WorkingWidth, 0
-    IniRead, Monitor3WorkingHeight, Config.ini, Resolution, Monitor3WorkingHeight, 0
-    IniRead, Monitor3WorkingWidth, Config.ini, Resolution, Monitor3WorkingWidth, 0
+    }
 }
 
 ; Check for firstrun

@@ -21,3 +21,7 @@ Loop{
 #A::DebugBox()
 #;::ToggleWindowBorders()
 #'::CloseWindow()
+#,::
+	WinGet, TempWin, ID, A
+	WhichMonitor(TempWin)
+Return

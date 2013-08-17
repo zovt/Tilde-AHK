@@ -123,23 +123,25 @@ CloseWindow()
 }
 
 ; Check which monitor a window is on
-WhichMonitor(Window){
+WhichMonitor(ByRef Window){
     Global
-    
-    MonitorMultiplier = 0
-    WinGetPos, WinX, WinY, ahk_id %Window%
-    If(WinX<0)
-    {
-        MonitorMultiplier = -1
-    }
-    If(WinX > 0 && WinX < 1920)
-    {
-        MonitorMultiplier = 0
-    }
-    If(WinX>1920)
-    {
-        MonitorMultiplier = 1
-    }
+	
+	MonitorPosition = 0
+	
+    id := %Window%
+    WinGetPos, WinX, WinY,,, ahk_id %Window%
+	
+	ArrayCount=1
+	Loop, %TotalMonitors%
+	{
+		if(Monitor%ArrayCount%BoundingLeft<WinX)
+		{
+			if(WinX<Monitor%ArrayCount%BoundingRight){
+				MonitorPosition = %ArrayCount%		
+			}
+		}
+		ArrayCount+=1
+	}
 }
 
     

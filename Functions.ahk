@@ -50,6 +50,11 @@ Autoconfigure()
 
     DefaultPortWindowHorizontalSize := Monitor1WorkingWidth*(2/3)
 
+    IniWrite, 0, Config.ini, Windows, PaddingVertical
+    IniWrite, 0, Config.ini, Windows, PaddingHorizontal
+    IniWrite,% DefaultPortWindowHorizontalSize, Config.ini, Windows, PortWindowHorizontalSize 
+    IniWrite, 1, Config.ini, Settings, MaxWindowsInPort
+
 }
 
 ;Set Up Window Dimensions

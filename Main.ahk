@@ -1,6 +1,18 @@
 #Include Functions.ahk
 
 ;Configure Tilde on load
-GetMonitorsAndResolutionsFromIni()
+CheckFirstRun()
+if(FirstRun=0){
+    GetMonitorsAndResolutionsFromIni()
+    GetWindowOptionsFromIni()
+} 
+else 
+{
+    Autoconfigure()
+}
 
-#A::MsgBox, A was hit
+EnumerateWindows()
+
+
+
+#A::DebugBox()

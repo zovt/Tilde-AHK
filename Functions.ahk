@@ -1,13 +1,25 @@
 ;Get Monitors and Resolutions from Config.ini
 GetMonitorsAndResolutionsFromIni()
 {
-    IniRead, Monitor1Height, Config.ini, Resolution, Monitor1WorkingHeight
-    IniRead, Monitor1Width, Config.ini, Resolution, Monitor1WorkingWidth
-    IniRead, Monitor2Height, Config.ini, Resolution, Monitor2WorkingHeight, 0
-    IniRead, Monitor2Width, Config.ini, Resolution, Monitor2WorkingWidth, 0
-    IniRead, Monitor3Height, Config.ini, Resolution, Monitor3WorkingHeight, 0
-    IniRead, Monitor3Width, Config.ini, Resolution, Monitor3WorkingWidth, 0
+    Global 
+
+    IniRead, Monitor1WorkingHeight, Config.ini, Resolution, Monitor1WorkingHeight, 0
+    IniRead, Monitor1WorkingWidth, Config.ini, Resolution, Monitor1WorkingWidth, 0
+    IniRead, Monitor2WorkingHeight, Config.ini, Resolution, Monitor2WorkingHeight, 0
+    IniRead, Monitor2WorkingWidth, Config.ini, Resolution, Monitor2WorkingWidth, 0
+    IniRead, Monitor3WorkingHeight, Config.ini, Resolution, Monitor3WorkingHeight, 0
+    IniRead, Monitor3WorkingWidth, Config.ini, Resolution, Monitor3WorkingWidth, 0
 }
+
+; Check for firstrun
+CheckFirstRun()
+{
+    Global
+
+    IniRead, FirstRun, Config.ini, Basic, FirstRun, 0
+}
+
+
 
 ;Write the file Config.ini to 
 WriteConfig()
@@ -15,23 +27,33 @@ WriteConfig()
 
 }
 
+;Auto Configure
 Autoconfigure()
 {
+    Global
+
     SysGet, TotalMonitors, MonitorCount
     SysGet, PrimaryMonitor, MonitorPrimary
 
     if(TotalMonitors>1){
         Loop, %TotalMonitors% 
         {
-            
+            ArrayCount +=1
+            SysGet, MonitorWorkingArea,MonitorWorkArea, %A_LoopField%
+            Monitor%ArrayCount%WorkingHeight := MonitorWorkingAreaBottom
+            Monitor%ArrayCount%WorkingWidth := MonitorWorkingAreaRight
         }
     }
+
+    DefaultPortWindowHorizontalSize := Monitor1WorkingWidth*(2/3)
+
 }
 
 ;Set Up Window Dimensions
 GetWindowOptionsFromIni()
 {
-    DefaultPortWindowHorizontalSize := Monitor1Width/3
+    Global
+
     IniRead, PaddingVertical, Config.ini, Windows, PaddingVertical
     IniRead, PaddingHorizontal, Config.ini, Windows, PaddingHorizontal
     IniRead, PortWindowHorizontalSize, Config.ini, Windows, PortWindowHorizontalSize, DefaultPortWindowHorizontalSize
@@ -42,9 +64,11 @@ CalculateWindowSizes()
 {
 
 }
-
+;Get Number of Windows
 EnumerateWindows()
 {
+    Global
+
     WinGet, NumWindows, Count,,,,
 }
 
@@ -76,3 +100,11 @@ GetTaskBarLocation()
     Return
 }
 ; source: http://www.autohotkey.com/forum/topic8597.html (holomind)
+
+
+; Debug MsgBox for checking Variable valuse
+DebugBox()
+{
+    ListVars
+    Pause
+}

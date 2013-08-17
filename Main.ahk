@@ -11,10 +11,12 @@ else
     Autoconfigure()
 }
 
-EnumerateWindows()
-
-
+Loop{
+    EnumerateWindows()
+    UpdateWindowList()
+    Sleep 200
+}
 
 #A::DebugBox()
 #;::ToggleWindowBorders()
-#"::CloseWindow()
+#'::CloseWindow()

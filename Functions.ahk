@@ -85,11 +85,26 @@ EnumerateWindows()
     WinGet, NumWindows, Count,,,,
 }
 
+; Get list of windows
+UpdateWindowList()
+{
+    Global
+    
+    WinGet, WindowListWindow, List
+    
+    ArrayCount = 1
+    Loop %WindowListWindow%
+    {
+        id := WindowListWindow%ArrayCount%
+        WinGetTitle, WindowListWindow%ArrayCount%Title, ahk_id %id%
+        ArrayCount += 1
+    }
+}
+
 ; Debug MsgBox for checking Variable valuse
 DebugBox()
 {
     ListVars
-    Pause
 }
 
 ;Toggle Windows Borders
@@ -104,3 +119,5 @@ CloseWindow()
 {
     WinClose, A
 }
+
+; Tile 

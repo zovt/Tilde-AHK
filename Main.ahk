@@ -16,3 +16,5 @@ EnumerateWindows()
 
 
 #A::DebugBox()
+#;::ToggleWindowBorders()
+#"::CloseWindow()

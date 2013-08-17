@@ -91,3 +91,16 @@ DebugBox()
     ListVars
     Pause
 }
+
+;Toggle Windows Borders
+ToggleWindowBorders()
+{
+    WinSet, Style, ^0xC00000, A; Caption
+    WinSet, Style, ^0x800000, A ; Border
+}
+
+;Simply Close the window
+CloseWindow()
+{
+    WinClose, A
+}

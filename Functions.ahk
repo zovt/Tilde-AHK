@@ -77,13 +77,6 @@ CalculateWindowSizes()
 {
 
 }
-;Get Number of Windows
-EnumerateWindows()
-{
-    Global
-
-    WinGet, NumWindows, Count,,,,
-}
 
 ; Get list of windows
 UpdateWindowList()

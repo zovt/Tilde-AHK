@@ -12,7 +12,6 @@ else
 }
 
 Loop{
-    EnumerateWindows()
     UpdateWindowList()
     Sleep 200
 }

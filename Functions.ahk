@@ -113,4 +113,50 @@ CloseWindow()
     WinClose, A
 }
 
-; Tile 
+; Check which monitor a window is on
+WhichMonitor(Window){
+    Global
+    
+    MonitorMultiplier = 0
+    WinGetPos, WinX, WinY, ahk_id %Window%
+    If(WinX<0)
+    {
+        MonitorMultiplier = -1
+    }
+    If(WinX > 0 && WinX < 1920)
+    {
+        MonitorMultiplier = 0
+    }
+    If(WinX>1920)
+    {
+        MonitorMultiplier = 1
+    }
+}
+; Tile Windows
+; Tile the Port
+PortTile()
+{
+    i = 1
+    Loop %WindowListWindow%
+    {
+        if(NumPortWindows!=MaxWindowsInPort)
+        {
+            
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

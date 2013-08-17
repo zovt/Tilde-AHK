@@ -16,7 +16,7 @@ CheckFirstRun()
 {
     Global
 
-    IniRead, FirstRun, Config.ini, Basic, FirstRun, 0
+    IniRead, FirstRun, Config.ini, Basic, FirstRun, 1
 }
 
 
@@ -31,6 +31,8 @@ WriteConfig()
 Autoconfigure()
 {
     Global
+
+    IniWrite, 0, Config.ini, Basic, FirstRun
 
     SysGet, TotalMonitors, MonitorCount
     SysGet, PrimaryMonitor, MonitorPrimary

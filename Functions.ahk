@@ -3,11 +3,20 @@ GetMonitorsAndResolutionsFromIni()
 {
     Global 
     IniRead, TotalMonitors, Config.ini, Monitors, TotalMonitors
-    Loop, %TotalMonitors%
+    IniRead, PrimaryMonitor, Config.ini, Monitors, PrimaryMonitor
+	Loop, %TotalMonitors%
     {
         ArrayCount +=1
         IniRead, Monitor%ArrayCount%WorkingHeight, Config.ini, Resolution, Monitor%ArrayCount%WorkingHeight, 0
         IniRead, Monitor%ArrayCount%WorkingWidth, Config.ini, Resolution, Monitor%ArrayCount%WorkingWidth, 0
+		
+		SysGet, Monitor%ArrayCount%Bounding, Monitor, %ArrayCount%
+			
+		IniRead, Monitor%ArrayCount%BoundingLeft, Config.ini, Monitors, Monitor%ArrayCount%BoundingLeft
+		IniRead, Monitor%ArrayCount%BoundingRight, Config.ini, Monitors, Monitor%ArrayCount%BoundingRight
+       	IniRead, Monitor%ArrayCount%BoundingBottom, Config.ini, Monitors, Monitor%ArrayCount%BoundingBottom
+		IniRead, Monitor%ArrayCount%BoundingTop, Config.ini, Monitors, Monitor%ArrayCount%BoundingTop
+		
 
     }
 }
@@ -48,7 +57,15 @@ Autoconfigure()
 
             IniWrite,% Monitor%ArrayCount%WorkingHeight, Config.ini, Resolution, Monitor%ArrayCount%WorkingHeight
             IniWrite,% Monitor%ArrayCount%WorkingWidth, Config.ini, Resolution, Monitor%ArrayCount%WorkingWidth
-        }
+			
+			SysGet, Monitor%ArrayCount%Bounding, Monitor, %ArrayCount%
+			
+			IniWrite,% Monitor%ArrayCount%BoundingLeft, Config.ini, Monitors, Monitor%ArrayCount%BoundingLeft
+			IniWrite,% Monitor%ArrayCount%BoundingRight, Config.ini, Monitors, Monitor%ArrayCount%BoundingRight
+        	IniWrite,% Monitor%ArrayCount%BoundingBottom, Config.ini, Monitors, Monitor%ArrayCount%BoundingBottom
+			IniWrite,% Monitor%ArrayCount%BoundingTop, Config.ini, Monitors, Monitor%ArrayCount%BoundingTop
+		
+		}
     }
 
     DefaultPortWindowHorizontalSize := Monitor1WorkingWidth*(2/3)
@@ -132,16 +149,7 @@ WhichMonitor(Window){
         MonitorMultiplier = 1
     }
 }
-; Tile Windows
-; Tile the Port
-PortTile()
-{
-    i = 1
-    Loop %WindowListWindow%
-    {
-        if(NumPortWindows!=MaxWindowsInPort)
-        {
-            
+
     
     
     

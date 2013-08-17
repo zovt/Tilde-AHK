@@ -11,10 +11,12 @@ else
     Autoconfigure()
 }
 
+
 Loop{
     UpdateWindowList()
     Sleep 200
 }
+
 
 #A::DebugBox()
 #;::ToggleWindowBorders()

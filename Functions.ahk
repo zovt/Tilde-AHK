@@ -42,6 +42,9 @@ Autoconfigure()
             SysGet, MonitorWorkingArea,MonitorWorkArea, %A_LoopField%
             Monitor%ArrayCount%WorkingHeight := MonitorWorkingAreaBottom
             Monitor%ArrayCount%WorkingWidth := MonitorWorkingAreaRight
+
+            IniWrite,% Monitor%ArrayCount%WorkingHeight, Config.ini, Resolution, Monitor%ArrayCount%WorkingHeight
+            IniWrite,% Monitor%ArrayCount%WorkingWidth, Config.ini, Resolution, Monitor%ArrayCount%WorkingWidth
         }
     }
 

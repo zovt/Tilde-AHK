@@ -84,36 +84,6 @@ EnumerateWindows()
     WinGet, NumWindows, Count,,,,
 }
 
-GetTaskBarLocation()
-{
-    ; get dimensions and position of taskbar (specialcase autohide ?)
-    WinGetPos, taskbarX, taskbarY, taskbarWidth, taskbarHeight, ahk_class Shell_TrayWnd
-
-    ; find out if its on top/left/bottom/right with its x,y
-    ; x0,y0 ( width < height )  means its on top
-    if ( taskbarX < 10 and taskbarWidth < taskbarHeight )
-        taskbarPosition = left
-
-    ; x0,y0 ( width >=  height )  means its on left
-    if ( taskbarX < 10 and taskbarWidth >= taskbarHeight )     
-        taskbarPosition = top
-
-    ; x+,y0 means its on right
-    if ( taskbarX > 10 )
-        taskbarPosition = right
-
-    ; x0,y+ means its on bottom
-    if ( taskbarY > 10 )
-        taskbarPosition = bottom
-
-    if ( (taskbarX = "") and (taskbarY = "") and (taskbarWidth = "") and (taskbarHeight = "") )
-        taskbarPosition = hidden
-
-    Return
-}
-; source: http://www.autohotkey.com/forum/topic8597.html (holomind)
-
-
 ; Debug MsgBox for checking Variable valuse
 DebugBox()
 {

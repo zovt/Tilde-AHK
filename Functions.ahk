@@ -29,14 +29,6 @@ CheckFirstRun()
     IniRead, FirstRun, Config.ini, Basic, FirstRun, 1
 }
 
-
-
-;Write the file Config.ini to 
-WriteConfig()
-{
-
-}
-
 ;Auto Configure
 Autoconfigure()
 {

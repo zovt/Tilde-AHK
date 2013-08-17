@@ -5,9 +5,9 @@ To install this script, right click on the file Main.ahk and click 'Compile Scri
 Running on Boot
 =====
 Windows 8
-=====
+-----
 To have this (or any) program run on boot, press WIN+r and type in %appdata%. Then, navigate to Microsoft -> Windows -> Start Menu -> Programs -> Startup and copy the file you generated in the previous step there
 
 Windows 7
-=====
+-----
 (To be expanded upon) Copy the generated file into your Startup folder in the Start Menu

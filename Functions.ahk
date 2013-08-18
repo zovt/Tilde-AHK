@@ -161,17 +161,52 @@ CountWindowsPerMonitor()
 	ArrayCount = 1
 	Loop, %WindowListWindow%
 	{
-		MsgBox,% WindowListWindow%ArrayCount%Title
-		CurrentPosition := WhichMonitor(WindowListWindow%ArrayCount%)
-		Monitor%CurrentPosition%TotalWindows += 1
+		if(WindowListWindow%ArrayCount%Title)
+		{
+			CurrentPosition := WhichMonitor(WindowListWindow%ArrayCount%)
+			MsgBox,% WindowListWindow%ArrayCount%Title . " current monitor: " . CurrentPosition
+			Monitor%CurrentPosition%TotalWindows += 1
+		}
 		ArrayCount += 1
 	}
 }
     
-    
-    
-    
-    
+; Build Monitor Database
+UpdateMonitorDatabase()
+{
+	Local ArrayCount = 1
+	Loop, %TotalMonitors%
+	{
+		Monitor%ArrayCount%TotalWindows = 0
+		ArrayCount +=1
+	}
+	
+	
+	ArrayCount = 1
+	
+	Loop, %WindowListWindow%
+	{
+		if(WindowListWindow%ArrayCount%Title)
+		{
+			CurrentPosition := WhichMonitor(WindowListWindow%ArrayCount%)
+			if(CurrentPosition)
+			{
+				Monitor%CurrentPosition%TotalWindows += 1
+				Local Temp := Monitor%CurrentPosition%TotalWindows
+				Monitor%CurrentPosition%Window%Temp% := ahk_id WindowListWindow%ArrayCount%
+			}
+		}
+    ArrayCount += 1
+	}
+}
+
+; Tile A Monitor's Windows
+Tile(Monitor)
+{	
+	Loop, (Monitor%Monitor%TotalWindows)
+	{
+	}
+}   
     
     
     

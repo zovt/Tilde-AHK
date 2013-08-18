@@ -14,6 +14,7 @@ else
 
 Loop{
     UpdateWindowList()
+	UpdateMonitorDatabase()
     Sleep 200
 }
 

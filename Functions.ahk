@@ -42,20 +42,20 @@ Autoconfigure()
     if(TotalMonitors>1){
         Loop, %TotalMonitors% 
         {
-            ArrayCount +=1
-            SysGet, MonitorWorkingArea,MonitorWorkArea, %A_LoopField%
-            Monitor%ArrayCount%WorkingHeight := MonitorWorkingAreaBottom
-            Monitor%ArrayCount%WorkingWidth := MonitorWorkingAreaRight
+            E +=1
+            SysGet, MonitorWorkingArea,MonitorWorkArea, %E%
+            Monitor%E%WorkingHeight := MonitorWorkingAreaBottom
+            Monitor%E%WorkingWidth := MonitorWorkingAreaRight
 
-            IniWrite,% Monitor%ArrayCount%WorkingHeight, Config.ini, Resolution, Monitor%ArrayCount%WorkingHeight
-            IniWrite,% Monitor%ArrayCount%WorkingWidth, Config.ini, Resolution, Monitor%ArrayCount%WorkingWidth
+            IniWrite,% Monitor%E%WorkingHeight, Config.ini, Resolution, Monitor%Et%WorkingHeight
+            IniWrite,% Monitor%E%WorkingWidth, Config.ini, Resolution, Monitor%E%WorkingWidth
 			
-			SysGet, Monitor%ArrayCount%Bounding, Monitor, %ArrayCount%
+			SysGet, Monitor%E%Bounding, Monitor, %E%
 			
-			IniWrite,% Monitor%ArrayCount%BoundingLeft, Config.ini, Monitors, Monitor%ArrayCount%BoundingLeft
-			IniWrite,% Monitor%ArrayCount%BoundingRight, Config.ini, Monitors, Monitor%ArrayCount%BoundingRight
-        	IniWrite,% Monitor%ArrayCount%BoundingBottom, Config.ini, Monitors, Monitor%ArrayCount%BoundingBottom
-			IniWrite,% Monitor%ArrayCount%BoundingTop, Config.ini, Monitors, Monitor%ArrayCount%BoundingTop
+			IniWrite,% Monitor%Et%BoundingLeft, Config.ini, Monitors, Monitor%E%BoundingLeft
+			IniWrite,% Monitor%E%BoundingRight, Config.ini, Monitors, Monitor%E%BoundingRight
+        	IniWrite,% Monitor%E%BoundingBottom, Config.ini, Monitors, Monitor%E%BoundingBottom
+			IniWrite,% Monitor%E%BoundingTop, Config.ini, Monitors, Monitor%E%BoundingTop
 		
 		}
     }
@@ -94,12 +94,12 @@ UpdateWindowList()
     
     WinGet, WindowListWindow, List
     
-    ArrayCount = 1
+    S = 1
     Loop %WindowListWindow%
     {
-        id := WindowListWindow%ArrayCount%
-        WinGetTitle, WindowListWindow%ArrayCount%Title, ahk_id %id%
-        ArrayCount += 1
+        id := WindowListWindow%S%
+        WinGetTitle, WindowListWindow%S%Title, ahk_id %id%
+        S += 1
     }
 }
 
@@ -128,25 +128,45 @@ WhichMonitor(ByRef Window){
 	
 	MonitorPosition = 0
 	
-    id := %Window%
+	id = %Window%
+	
     WinGetPos, WinX, WinY,,, ahk_id %Window%
 	
-	ArrayCount=1
+	R=1
 	Loop, %TotalMonitors%
 	{
-		if(Monitor%ArrayCount%BoundingLeft<WinX)
+		if(Monitor%R%BoundingLeft<WinX)
 		{
-			if(WinX<Monitor%ArrayCount%BoundingRight){
-				MonitorPosition = %ArrayCount%		
+			if(WinX<Monitor%R%BoundingRight){
+				MonitorPosition = %R%
+				Return MonitorPosition
 			}
 		}
-		ArrayCount+=1
+		R+=1
 	}
 }
 
-    
-    
-    
+; Count how many windows are on each monitor
+CountWindowsPerMonitor()
+{
+	Global
+	O = 1
+	Loop, %TotalMonitors%
+	{
+		Monitor%O%TotalWindows = 0
+		O +=1
+	}
+	
+	
+	I = 1
+	Loop, %WindowListWindow%
+	{
+		MsgBox,% WindowListWindow%I%Title
+		CurrentPosition := WhichMonitor(WindowListWindow%I%)
+		Monitor%CurrentPosition%TotalWindows += 1
+		I += 1
+	}
+}
     
     
     

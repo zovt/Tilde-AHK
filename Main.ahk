@@ -25,3 +25,5 @@ Loop{
 	WinGet, TempWin, ID, A
 	WhichMonitor(TempWin)
 Return
+
+#o::CountWindowsPerMonitor()

@@ -43,7 +43,7 @@ Autoconfigure()
         Loop, %TotalMonitors% 
         {
             Local ArrayCount +=1
-            SysGet, MonitorWorkingArea,MonitorWorkArea, %A_LoopField%
+            SysGet, MonitorWorkingArea,MonitorWorkArea, %ArrayCount%
             Monitor%ArrayCount%WorkingHeight := MonitorWorkingAreaBottom
             Monitor%ArrayCount%WorkingWidth := MonitorWorkingAreaRight
 

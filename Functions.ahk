@@ -193,15 +193,20 @@ UpdateMonitorDatabase()
 	{
 		if(WindowListWindow%ArrayCount%Title)
 		{
-			CurrentPosition := WhichMonitor(WindowListWindow%ArrayCount%)
-			if(CurrentPosition)
+			IsIgnore = 0
+			IsIgnore := InStr(IgnoreList,WindowListWindow%ArrayCount%Title)
+			if(!IsIgnore)
 			{
-				Monitor%CurrentPosition%TotalWindows += 1
-				Local Temp := Monitor%CurrentPosition%TotalWindows
-				Monitor%CurrentPosition%Window%Temp% := ahk_id WindowListWindow%ArrayCount%
+				CurrentPosition := WhichMonitor(WindowListWindow%ArrayCount%)
+				if(CurrentPosition)
+				{
+					Monitor%CurrentPosition%TotalWindows += 1
+					Local Temp := Monitor%CurrentPosition%TotalWindows
+					Monitor%CurrentPosition%Window%Temp% := ahk_id WindowListWindow%ArrayCount%
+				}
 			}
 		}
-    ArrayCount += 1
+		ArrayCount += 1
 	}
 }
 

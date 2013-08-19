@@ -237,7 +237,7 @@ Tile(Monitor)
 		{
 			Local TempId := Monitor%Monitor%Window%ArrayCount%
 			XMove := Monitor%Monitor%BoundingLeft + %PaddingHorizontal%
-			YMove := (Monitor%Monitor%WindowsInPort*(Monitor%Monitor%WorkingHeight-(MaxWindowsInPort*(PaddingVertical+1))/MaxWindowsInPort))
+			YMove := Monitor%Monitor%WindowsInPort*(Monitor%Monitor%WorkingHeight-(MaxWindowsInPort*(PaddingVertical+1)))/(MaxWindowsInPort)
 			YHeight := (Monitor%Monitor%WorkingHeight-((MaxWindowsInPort+1)*PaddingVertical))/MaxWindowsInPort
 			WinMove, ahk_id %TempId%,, %XMove%, %YMove%, %PortWindowHorizontalSize%, %YHeight%
 			Monitor%Monitor%WindowsInPort += 1

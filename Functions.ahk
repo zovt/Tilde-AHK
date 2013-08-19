@@ -204,7 +204,21 @@ UpdateMonitorDatabase()
 ; Tile A Monitor's Windows
 Tile(Monitor)
 {	
+		
 	Local ArrayCount = 1
+	
+	Local VarsSetUp = 1
+	Loop, %TotalMonitors%
+	{
+		Monitor%VarsSetUp%WindowsInDeck = 0
+		Monitor%VarsSetUp%WindowsInPort = 0
+		VarsSetUp +=1
+	}
+	
+			
+		
+	
+
 
 	TMPST := Monitor%Monitor%TotalWindows
 	
@@ -217,17 +231,17 @@ Tile(Monitor)
 			YMove := (Monitor%Monitor%WindowsInPort*(Monitor%Monitor%WorkingHeight-(MaxWindowsInPort*(PaddingVertical+1))/MaxWindowsInPort))
 			YHeight := (Monitor%Monitor%WorkingHeight-((MaxWindowsInPort+1)*PaddingVertical))/MaxWindowsInPort
 			WinMove, ahk_id %TempId%,, %XMove%, %YMove%, %PortWindowHorizontalSize%, %YHeight%
-			Monitor%Monitor%WindowsInPort += 1
+			Monitor%Monitor%WindowsInPort += 1	
 		}
 		Else
 		{
 			TempId := Monitor%Monitor%Window%ArrayCount%
 			XMove := (Monitor%Monitor%BoundingLeft)+PortWindowHorizontalSize+PaddingHorizontal
-			YMove := Monitor%Monitor%WindowsInDeck*(Monitor%Monitor%WorkingHeight-(Monitor%Monitor%WindowsInDeck*(PaddingVertical+1))/Monitor%Monitor%WindowsInDeck)
+			YMove := Monitor%Monitor%WindowsInDeck*(Monitor%Monitor%WorkingHeight-(Monitor%Monitor%WindowsInDeck*(PaddingVertical+1)))/(Monitor%Monitor%WindowsInDeck+1)
 			XWidth := Monitor%Monitor%WorkingWidth - PortWindowHorizontalSize
-			YHeight := (Monitor%Monitor%WorkingHeight-((Monitor%Monitor%WindowsInDeck+1)*PaddingVertical))/Monitor%Monitor%WindowsInDeck
+			YHeight := (Monitor%Monitor%WorkingHeight-((Monitor%Monitor%WindowsInDeck+1)*PaddingVertical))/(Monitor%Monitor%WindowsInDeck+1)
 			WinMove, ahk_id %TempId%,, %XMove%, %YMove%, %XWidth%, %YHeight%
-			Pause
+			Monitor%Monitor%WindowsInDeck += 1
 		}
 		ArrayCount += 1
 	}

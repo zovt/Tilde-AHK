@@ -135,9 +135,9 @@ WhichMonitor(ByRef Window){
 	Local ArrayCount=1
 	Loop, %TotalMonitors%
 	{
-		if(Monitor%ArrayCount%BoundingLeft<WinX)
+		if(Monitor%ArrayCount%BoundingLeft<=WinX)
 		{
-			if(WinX<Monitor%ArrayCount%BoundingRight){
+			if(WinX<=Monitor%ArrayCount%BoundingRight){
 				MonitorPosition = %ArrayCount%
 				Return MonitorPosition
 			}
@@ -164,7 +164,6 @@ CountWindowsPerMonitor()
 		if(WindowListWindow%ArrayCount%Title)
 		{
 			CurrentPosition := WhichMonitor(WindowListWindow%ArrayCount%)
-			MsgBox,% WindowListWindow%ArrayCount%Title . " current monitor: " . CurrentPosition
 			Monitor%CurrentPosition%TotalWindows += 1
 		}
 		ArrayCount += 1
@@ -174,6 +173,8 @@ CountWindowsPerMonitor()
 ; Build Monitor Database
 UpdateMonitorDatabase()
 {
+	Global
+	
 	Local ArrayCount = 1
 	Loop, %TotalMonitors%
 	{
@@ -203,8 +204,32 @@ UpdateMonitorDatabase()
 ; Tile A Monitor's Windows
 Tile(Monitor)
 {	
-	Loop, (Monitor%Monitor%TotalWindows)
+	Local ArrayCount = 1
+
+	TMPST := Monitor%Monitor%TotalWindows
+	
+	Loop, %TMPST%
 	{
+		If(Monitor%Monitor%WindowsInPort!=MaxWindowsInPort)
+		{
+			Local TempId := Monitor%Monitor%Window%ArrayCount%
+			XMove := Monitor%Monitor%BoundingLeft + %PaddingHorizontal%
+			YMove := (Monitor%Monitor%WindowsInPort*(Monitor%Monitor%WorkingHeight-(MaxWindowsInPort*(PaddingVertical+1))/MaxWindowsInPort))
+			YHeight := (Monitor%Monitor%WorkingHeight-((MaxWindowsInPort+1)*PaddingVertical))/MaxWindowsInPort
+			WinMove, ahk_id %TempId%,, %XMove%, %YMove%, %PortWindowHorizontalSize%, %YHeight%
+			Monitor%Monitor%WindowsInPort += 1
+		}
+		Else
+		{
+			TempId := Monitor%Monitor%Window%ArrayCount%
+			XMove := (Monitor%Monitor%BoundingLeft)+PortWindowHorizontalSize+PaddingHorizontal
+			YMove := Monitor%Monitor%WindowsInDeck*(Monitor%Monitor%WorkingHeight-(Monitor%Monitor%WindowsInDeck*(PaddingVertical+1))/Monitor%Monitor%WindowsInDeck)
+			XWidth := Monitor%Monitor%WorkingWidth - PortWindowHorizontalSize
+			YHeight := (Monitor%Monitor%WorkingHeight-((Monitor%Monitor%WindowsInDeck+1)*PaddingVertical))/Monitor%Monitor%WindowsInDeck
+			WinMove, ahk_id %TempId%,, %XMove%, %YMove%, %XWidth%, %YHeight%
+			Pause
+		}
+		ArrayCount += 1
 	}
 }   
     

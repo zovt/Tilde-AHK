@@ -27,7 +27,7 @@ Loop{
 
 
 #A::DebugBox()
-#;::ToggleWindowBorders()
+#;::ToggleWindowBorders(A)
 #'::CloseWindow()
 #,::
 	WinGet, TempWin, ID, A

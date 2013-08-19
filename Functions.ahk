@@ -114,10 +114,11 @@ DebugBox()
 }
 
 ;Toggle Windows Borders
-ToggleWindowBorders()
+ToggleWindowBorders(ByRef Window)
 {
-    WinSet, Style, ^0xC00000, A; Caption
-    WinSet, Style, ^0x800000, A ; Border
+	Global 
+    WinSet, Style, -0xC00000, ahk_id %Window%
+    WinSet, Style, -0x800000, ahk_id %Window%
 }
 
 ;Simply Close the window
@@ -224,8 +225,7 @@ Tile(Monitor)
 		VarsSetUp +=1
 	}
 	
-			
-		
+				
 	
 
 
@@ -236,9 +236,10 @@ Tile(Monitor)
 		If(Monitor%Monitor%WindowsInPort!=MaxWindowsInPort)
 		{
 			Local TempId := Monitor%Monitor%Window%ArrayCount%
-			XMove := Monitor%Monitor%BoundingLeft + %PaddingHorizontal%
-			YMove := Monitor%Monitor%WindowsInPort*(Monitor%Monitor%WorkingHeight-(MaxWindowsInPort*(PaddingVertical+1)))/(MaxWindowsInPort)
+			ToggleWindowBorders(%TempId%)
 			YHeight := (Monitor%Monitor%WorkingHeight-((MaxWindowsInPort+1)*PaddingVertical))/MaxWindowsInPort
+			XMove := Monitor%Monitor%BoundingLeft + PaddingHorizontal
+			YMove := PaddingVertical+(Monitor%Monitor%WindowsInPort*YHeight) + (Monitor%Monitor%WindowsInPort*MaxWindowsInPort * PaddingVertical/MaxWindowsInPort)
 			WinMove, ahk_id %TempId%,, %XMove%, %YMove%, %PortWindowHorizontalSize%, %YHeight%
 			Monitor%Monitor%WindowsInPort += 1
 		}
@@ -246,11 +247,12 @@ Tile(Monitor)
 		{
 			Remaining%Monitor% := Monitor%Monitor%TotalWindows - MaxWindowsInPort
 			TempId := Monitor%Monitor%Window%ArrayCount%
-			XMove := (Monitor%Monitor%BoundingLeft)+PortWindowHorizontalSize+PaddingHorizontal
-			YMove := Monitor%Monitor%WindowsInDeck*(Monitor%Monitor%WorkingHeight-(Remaining%Monitor%*(PaddingVertical+1)))/(Remaining%Monitor%)
-			XWidth := Monitor%Monitor%WorkingWidth - PortWindowHorizontalSize
+			XWidth := Monitor%Monitor%WorkingWidth - PortWindowHorizontalSize - (3*PaddingHorizontal)
 			YHeight := (Monitor%Monitor%WorkingHeight-((Remaining%Monitor%+1)*PaddingVertical))/(Remaining%Monitor%)
-			WinMove, ahk_id %TempId%,, %XMove%, %YMove%, %XWidth%, %YHeight%
+			XMove := (Monitor%Monitor%BoundingLeft)+PortWindowHorizontalSize+(2*PaddingHorizontal)
+			;YMove := (Monitor%Monitor%WindowsInDeck*(Monitor%Monitor%WorkingHeight-(Remaining%Monitor%*(PaddingVertical+1))))/(Remaining%Monitor%)
+			YMove := PaddingVertical+(Monitor%Monitor%WindowsInDeck*YHeight)+(Monitor%Monitor%WindowsInDeck*Remaining%Monitor% * PaddingVertical/Remaining%Monitor%)
+			WinMove, ahk_id %TempId%,, %XMove%,% YMove, %XWidth%, %YHeight%
 			Monitor%Monitor%WindowsInDeck += 1
 		}
 		ArrayCount += 1

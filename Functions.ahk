@@ -68,6 +68,8 @@ Autoconfigure()
     IniWrite, 1, Config.ini, Settings, MaxWindowsInPort
     IniWrite,% TotalMonitors, Config.ini, Monitors, TotalMonitors
     IniWrite,% PrimaryMonitor, Config.ini, Monitors, PrimaryMonitor
+	
+	IniWrite, "", Config.ini, Settings, IgnoreList
 
 }
 
@@ -80,6 +82,8 @@ GetWindowOptionsFromIni()
     IniRead, PaddingHorizontal, Config.ini, Windows, PaddingHorizontal
     IniRead, PortWindowHorizontalSize, Config.ini, Windows, PortWindowHorizontalSize, DefaultPortWindowHorizontalSize
     IniRead, MaxWindowsInPort, Config.ini, Settings, MaxWindowsInPort, 1
+	
+	IniRead, IgnoreList, Config.ini, Settings, IgnoreList, ""
 }
 
 CalculateWindowSizes()
@@ -231,15 +235,16 @@ Tile(Monitor)
 			YMove := (Monitor%Monitor%WindowsInPort*(Monitor%Monitor%WorkingHeight-(MaxWindowsInPort*(PaddingVertical+1))/MaxWindowsInPort))
 			YHeight := (Monitor%Monitor%WorkingHeight-((MaxWindowsInPort+1)*PaddingVertical))/MaxWindowsInPort
 			WinMove, ahk_id %TempId%,, %XMove%, %YMove%, %PortWindowHorizontalSize%, %YHeight%
-			Monitor%Monitor%WindowsInPort += 1	
+			Monitor%Monitor%WindowsInPort += 1
 		}
 		Else
 		{
+			Remaining%Monitor% := Monitor%Monitor%TotalWindows - MaxWindowsInPort
 			TempId := Monitor%Monitor%Window%ArrayCount%
 			XMove := (Monitor%Monitor%BoundingLeft)+PortWindowHorizontalSize+PaddingHorizontal
-			YMove := Monitor%Monitor%WindowsInDeck*(Monitor%Monitor%WorkingHeight-(Monitor%Monitor%WindowsInDeck*(PaddingVertical+1)))/(Monitor%Monitor%WindowsInDeck+1)
+			YMove := Monitor%Monitor%WindowsInDeck*(Monitor%Monitor%WorkingHeight-(Remaining%Monitor%*(PaddingVertical+1)))/(Remaining%Monitor%)
 			XWidth := Monitor%Monitor%WorkingWidth - PortWindowHorizontalSize
-			YHeight := (Monitor%Monitor%WorkingHeight-((Monitor%Monitor%WindowsInDeck+1)*PaddingVertical))/(Monitor%Monitor%WindowsInDeck+1)
+			YHeight := (Monitor%Monitor%WorkingHeight-((Remaining%Monitor%+1)*PaddingVertical))/(Remaining%Monitor%)
 			WinMove, ahk_id %TempId%,, %XMove%, %YMove%, %XWidth%, %YHeight%
 			Monitor%Monitor%WindowsInDeck += 1
 		}

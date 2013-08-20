@@ -13,13 +13,14 @@ else
 
 
 Loop{
-    UpdateWindowList()
+	UpdateWindowList()
 	CountWindowsPerMonitor()
 	UpdateMonitorDatabase()
+
 	ACount = 1
 	Loop, %TotalMonitors%
 	{
-		Tile(ACount)
+		TileHotkeySwitch(ACount)
 		ACount += 1
 	}
     Sleep 200

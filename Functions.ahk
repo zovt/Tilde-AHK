@@ -86,25 +86,45 @@ GetWindowOptionsFromIni()
 	IniRead, IgnoreList, Config.ini, Settings, IgnoreList, ""
 }
 
-CalculateWindowSizes()
-{
-
-}
-
 ; Get list of windows
 UpdateWindowList()
 {
     Global
     
-    WinGet, WindowListWindow, List
+    WinGet, WindowList, List
     
-    ArrayCount = 1
-    Loop %WindowListWindow%
+    Local ArrayCount = 1
+    Loop %WindowList%
     {
-        id := WindowListWindow%ArrayCount%
-        WinGetTitle, WindowListWindow%ArrayCount%Title, ahk_id %id%
+        id := WindowList%ArrayCount%
+        WinGetTitle, WindowList%ArrayCount%Title, ahk_id %id%
         ArrayCount += 1
     }
+	
+	ArrayCount = 1
+	
+	
+	Local IgnoreMe = 0
+	
+	Loop %WindowList%
+	{
+		IgnoreMe := InStr(WindowIdList,WindowList%ArrayCount%)
+		;MsgBox,% WindowList%A_Index% . " | IgnoreMe: " . IgnoreMe
+		if(!IgnoreMe){
+			WindowListWindow += 1
+			WindowListWindow%WindowListWindow% := WindowList%A_Index%
+			WindowListWindow%WindowListWindow%Window := WindowList%A_Index%Title
+		}
+		ArrayCount +=1
+	}
+	
+	WindowIdList :=
+	
+	Loop %WindowListWindow%
+	{
+		WindowIdList := WindowIdList . ", " WindowList%A_Index%
+	}
+	
 }
 
 ; Debug MsgBox for checking Variable valuse
@@ -212,7 +232,7 @@ UpdateMonitorDatabase()
 }
 
 ; Tile A Monitor's Windows
-Tile(Monitor)
+TileAutoSwitch(Monitor)
 {	
 		
 	Local ArrayCount = 1
@@ -230,6 +250,17 @@ Tile(Monitor)
 
 
 	TMPST := Monitor%Monitor%TotalWindows
+	
+	If(MaxWindowsInPort>=Monitor%Monitor%TotalWindows)
+	{
+		Local Shumpa := % Monitor%Monitor%TotalWindows - 1
+	}
+	Else
+	{
+		Shumpa := MaxWindowsInPort
+	}
+	
+	Local MaxWindowsInPort = Shumpa
 	
 	Loop, %TMPST%
 	{
@@ -250,7 +281,6 @@ Tile(Monitor)
 			XWidth := Monitor%Monitor%WorkingWidth - PortWindowHorizontalSize - (3*PaddingHorizontal)
 			YHeight := (Monitor%Monitor%WorkingHeight-((Remaining%Monitor%+1)*PaddingVertical))/(Remaining%Monitor%)
 			XMove := (Monitor%Monitor%BoundingLeft)+PortWindowHorizontalSize+(2*PaddingHorizontal)
-			;YMove := (Monitor%Monitor%WindowsInDeck*(Monitor%Monitor%WorkingHeight-(Remaining%Monitor%*(PaddingVertical+1))))/(Remaining%Monitor%)
 			YMove := PaddingVertical+(Monitor%Monitor%WindowsInDeck*YHeight)+(Monitor%Monitor%WindowsInDeck*Remaining%Monitor% * PaddingVertical/Remaining%Monitor%)
 			WinMove, ahk_id %TempId%,, %XMove%,% YMove, %XWidth%, %YHeight%
 			Monitor%Monitor%WindowsInDeck += 1
@@ -258,7 +288,86 @@ Tile(Monitor)
 		ArrayCount += 1
 	}
 }   
-    
+
+;Tile Without the Focused window automatically swapping into the port
+
+
+
+TileHotkeySwitch(Monitor)
+{ 		
+	Local ArrayCount = 1
+	Local VarsSetUp = 1
+	
+	Loop, %TotalMonitors%
+	{
+		Monitor%VarsSetUp%WindowsInDeck = 0
+		Monitor%VarsSetUp%WindowsInPort = 0
+		VarsSetUp +=1
+	}
+
+
+	TMPST := Monitor%Monitor%TotalWindows
+	
+	If(MaxWindowsInPort>=Monitor%Monitor%TotalWindows)
+	{
+		Local Shumpa := % Monitor%Monitor%TotalWindows - 1
+	}
+	Else
+	{
+		Shumpa := MaxWindowsInPort
+	}
+	
+	Local MaxWindowsInPort = Shumpa
+
+
+	If(Monitor%Monitor%TotalWindows!=PrevTotWin%Monitor%)
+	{
+		Loop, %TMPST%
+		{
+			If(Monitor%Monitor%WindowsInPort!=MaxWindowsInPort)
+			{
+				Monitor%Monitor%PortWindow%ArrayCount% := Monitor%Monitor%Window%ArrayCount%
+			}
+			Else
+			{
+				Local AcCount := ArrayCount - MaxWindowsInPort
+				Monitor%Monitor%DeckWindow%AcCount% := Monitor%Monitor%Window%ArrayCount%
+			}
+			ArrayCount += 1
+		}
+	}
+	
+	PrevTotWin%Monitor% := Monitor%Monitor%TotalWindows	
+	
+	ArrayCount = 1
+	AcCount = 1
+	Loop, %TMPST%
+	{
+		If(Monitor%Monitor%WindowsInPort!=MaxWindowsInPort)
+		{
+			TempId := Monitor%Monitor%PortWindow%ArrayCount%
+			ToggleWindowBorders(%TempId%)
+			YHeight := (Monitor%Monitor%WorkingHeight-((MaxWindowsInPort+1)*PaddingVertical))/MaxWindowsInPort
+			XMove := Monitor%Monitor%BoundingLeft + PaddingHorizontal
+			YMove := PaddingVertical+(Monitor%Monitor%WindowsInPort*YHeight) + (Monitor%Monitor%WindowsInPort*MaxWindowsInPort * PaddingVertical/MaxWindowsInPort)
+			WinMove, ahk_id %TempId%,, %XMove%, %YMove%, %PortWindowHorizontalSize%, %YHeight%
+			Monitor%Monitor%WindowsInPort += 1
+		}
+		Else
+		{
+			AcCount := ArrayCount - MaxWindowsInPort
+			Remaining%Monitor% := Monitor%Monitor%TotalWindows - MaxWindowsInPort
+			TempId := Monitor%Monitor%PortWindow%ArrayCount%
+			XWidth := Monitor%Monitor%WorkingWidth - PortWindowHorizontalSize - (3*PaddingHorizontal)
+			YHeight := (Monitor%Monitor%WorkingHeight-((Remaining%Monitor%+1)*PaddingVertical))/(Remaining%Monitor%)
+			XMove := (Monitor%Monitor%BoundingLeft)+PortWindowHorizontalSize+(2*PaddingHorizontal)
+			YMove := PaddingVertical+(Monitor%Monitor%WindowsInDeck*YHeight)+(Monitor%Monitor%WindowsInDeck*Remaining%Monitor% * PaddingVertical/Remaining%Monitor%)
+			WinMove, ahk_id %TempId%,, %XMove%,% YMove, %XWidth%, %YHeight%
+			Monitor%Monitor%WindowsInDeck += 1
+		}
+		ArrayCount += 1
+	}
+}   
     
     
     

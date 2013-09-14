@@ -1,4 +1,6 @@
-#Include Functions.ahk
+#Include Functions\Misc.ahk
+#Include Functions\Configuration.ahk
+#Include Functions\Tiling.ahk
 
 ;Configure Tilde on load
 CheckFirstRun()

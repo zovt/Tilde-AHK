@@ -13,28 +13,17 @@ else
     Autoconfigure()
 }
 
-UpdateWindowList()
-CountWindowsPerMonitor()
-UpdateMonitorDatabase()
-
-Loop{
-
-	ACount = 1
-	Loop, %TotalMonitors%
-	{
-		TileHotkeySwitch(ACount)
-		ACount += 1
-	}
-    Sleep 200
+Loop
+{
+	UpdateMonitorDatabase()
 }
-
 
 #A::DebugBox()
 #;::ToggleWindowBorders(A)
 #'::CloseWindow()
 #,::
 	WinGet, TempWin, ID, A
-	WhichMonitor(TempWin)
+	;WhichMonitor(TempWin)
 Return
 
-#o::CountWindowsPerMonitor()
+;#o::CountWindowsPerMonitor()

@@ -34,13 +34,16 @@ UpdateMonitorDatabase()
 	{
 		tempid := WindowListRaw%A_Index%
 		WinGetTitle, TempName, ahk_id %tempid%
-		IfNotInString, ExcludeList, %TempName%
+		IfNotInString, IgnoreList, %TempName%
 		{
-			ExcludeList := ExcludeList . ", " . TempName
-			Monitor := WhichMonitor(WindowListRaw%A_Index%)
-			Monitor%Monitor%DBCount += 1
-			TempCount := Monitor%Monitor%DBCount
-			Monitor%Monitor%DBWindow%TempCount% := WindowListRaw%A_Index%
+			IfNotInString, ExcludeList, %TempName%
+			{
+				ExcludeList := ExcludeList . ", " . TempName
+				Monitor := WhichMonitor(WindowListRaw%A_Index%)
+				Monitor%Monitor%DBCount += 1
+				TempCount := Monitor%Monitor%DBCount
+				Monitor%Monitor%DBWindow%TempCount% := WindowListRaw%A_Index%
+			}
 		}
 	}
 }
@@ -71,9 +74,16 @@ TileWindows(Monitor)
 			Remaining%Monitor% := Monitor%Monitor%DBCount - MaxWindowsInPort
 			TempId := Monitor%Monitor%DBWindow%A_Index%
 			XWidth := Monitor%Monitor%WorkingWidth - PortWindowHorizontalSize - (3*PaddingHorizontal)
-			YHeight := (Monitor%Monitor%WorkingHeight-((Remaining%Monitor%+1)*PaddingVertical))
+			YHeight := (Monitor%Monitor%WorkingHeight-((Remaining%Monitor%+1)*PaddingVertical))/(Remaining%Monitor%)
 			XMove := (Monitor%Monitor%BoundingLeft)+PortWindowHorizontalSize+(2*PaddingHorizontal)
-			YMove := PaddingVertical+(Monitor%Monitor%WindowsInDeck*YHeight)+(Monitor%Monitor%WindowsInDeck*Remaining%Monitor% * PaddingVertical)
+			If(Monitor%Monitor%WindowsInDeck)
+			{
+				YMove := (Monitor%Monitor%WindowsInDeck*YHeight)+(Monitor%Monitor%WindowsInDeck*Remaining%Monitor% * PaddingVertical)
+			}
+			Else
+			{
+				YMove := PaddingVertical+(Monitor%Monitor%WindowsInDeck*YHeight)+(Monitor%Monitor%WindowsInDeck*Remaining%Monitor% * PaddingVertical)
+			}
 			WinMove, ahk_id %TempId%,, %XMove%,% YMove, %XWidth%, %YHeight%
 			Monitor%Monitor%WindowsInDeck += 1
 		}

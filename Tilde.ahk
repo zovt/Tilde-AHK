@@ -16,6 +16,11 @@ else
 Loop
 {
 	UpdateMonitorDatabase()
+	Loop, %TotalMonitors%
+	{
+		M = %A_Index%
+		TileWindows(M)
+	}
 }
 
 #A::DebugBox()

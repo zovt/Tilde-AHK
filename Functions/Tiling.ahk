@@ -8,7 +8,7 @@ DetectHiddenWindows, Off
 
 
 class Monitor{
-	__New(leftBound, topBound, rightBound, bottomBound, taskbarLeft, taskbarRight, taskbarTop, taskbarBottom){
+	__New(leftBound, topBound, rightBound, bottomBound, taskbarLeft, taskbarRight, taskbarTop, taskbarBottom, BorHor, BorVert, PadHor, PadVert, PortWin){
 		
 		this.workspace := 1
 		this.Mode := 1
@@ -21,18 +21,23 @@ class Monitor{
 		this.Width := this.RightX - this.LeftX
 		this.Height := this.BottomY - this.TopY
 		
-		this.usableSpace(taskbarLeft, taskbarRight, taskbarTop, taskbarBottom)
-		
 		this.Windows := Object()
 		this.NumberWindows := 0
 		
-		this.WindowsInPort := 0
-		this.WindowsInDeck := 0
+		this.WindowPaddingHorizontal := PadHor
+		this.WindowPaddingVertical := PadVert
+		
+		this.BorderHorizontal := BorHor
+		this.BorderVertical := BorVert
+		
+		this.WindowsInPort := PortWin
+		
+		this.usableSpace(taskbarLeft, taskbarRight, taskbarTop, taskbarBottom, BorHor, BorVert)
 	}
 		
-	usableSpace(taskbarLeftSize, taskbarRightSize, taskbarTopSize, taskbarBottomSize){
-		this.UsableWidth := this.Width - taskbarRightSize - taskbarLeftSize
-		this.UsableHeight := this.Height - taskbarTopSize - taskbarBottomSize
+	usableSpace(taskbarLeftSize, taskbarRightSize, taskbarTopSize, taskbarBottomSize, padHor, padVert){
+		this.UsableWidth := this.Width - taskbarRightSize - taskbarLeftSize - (padHor * 2)
+		this.UsableHeight := this.Height - taskbarTopSize - taskbarBottomSize - (padVert * 2)
 	}
 	
 	details(){
@@ -48,6 +53,10 @@ class Monitor{
 	Swap(IDToMove, positionToMoveTo){
 		temp := this.Windows[positionToMoveTo]
 		temp2 := this.NumberWindows
+		if(positionToMoveTo > temp2)
+		{
+			return 0
+		}
 		Loop, %temp2%
 		{
 			temp3 := this.Windows[A_Index]
@@ -56,6 +65,40 @@ class Monitor{
 				this.Windows[positionToMoveTo] := temp3
 				this.Windows[A_Index] := temp
 				return 1
+			}
+		}
+	}
+	
+	Ship()
+	{
+		global
+		local result, tempWin, tempNum, tempHorPad, tempVertPad, tempPW, tempN, PortWindowSizeVertical, PortWindowSizeHorizontal, PortWindowVerticalMovement, DeckWindowSizeVertical, DeckWindowSizeHorizontal, DeckWindowVerticalMovement
+	
+		tempNum := this.NumberWindows
+		tempHorBor := this.BorderHorizontal
+		tempVertBor := this.BorderVertical
+		tempHorPad := this.WindowPaddingHorizontal
+		tempVertPad := this.WindowPaddingVertical
+		tempPW := this.WindowsInPort
+		tempN := this.NumberWindows - tempPW
+	
+		PortWindowSizeVertical := (this.UsableHeight - (tempPW - 1)*tempVertPad)/tempPW
+		PortWindowSizeHorizontal := 2*(this.UsableWidth - (tempHorPad))/3
+		PortWindowVerticalMovement := PortWindowSizeVertical+tempVertPad
+		DeckWindowSizeVertical := (this.UsableHeight - (tempN - 1)*tempVertPad)/tempN
+		DeckWindowSizeHorizontal := (this.UsableWidth - (tempHorPad))/3
+		DeckWindowVerticalMovement := DeckWindowSizeVertical+tempVertPad
+		DeckWindowHorizontalMovement := PortWindowSizeHorizontal + tempHorPad
+	
+		Loop, %tempNum%
+		{	
+			tempWin := this.Windows[A_index]
+			; Move Windows in the Ports
+			if(A_Index<=tempPW)
+			{
+				WinMove, ahk_id %tempWin%,, this.LeftX + tempHorBor, this.TopY + tempVertBor + PortWindowVerticalMovement*(A_Index - 1), PortWindowSizeHorizontal, PortWindowSizeVertical
+			} else {
+				WinMove, ahk_id %tempWin%,, this.LeftX + tempHorBor + DeckWindowHorizontalMovement, this.TopY + tempVertBor + DeckWindowVerticalMovement*(A_Index-tempPW-1), this.UsableWidth/3, DeckWindowSizeVertical
 			}
 		}
 	}
@@ -92,6 +135,8 @@ Configure(){
 	titlesOn := 1
 	ignoreList := "Shell_SecondaryTrayWnd, Shell_TrayWnd, EdgeUiInputTopWndClass, WorkerW, Progman"
 	
+	ReadOptionsFromIni()
+	
 	SysGet, numMonitors, MonitorCount
 	Loop, %numMonitors%
 	{
@@ -101,11 +146,32 @@ Configure(){
 		leftTaskbar := 0
 		
 		SysGet, mon, Monitor, %A_Index%
-		mon%A_Index% := new Monitor(monLeft, monTop, monRight, monBottom, leftTaskbar, rightTaskbar, topTaskbar, bottomTaskbar)
+		mon%A_Index% := new Monitor(monLeft, monTop, monRight, monBottom, leftTaskbar, rightTaskbar, topTaskbar, bottomTaskbar, BorderHor, BorderVert, PaddingHor, PaddingVert, InitialPortWindows)
 		
 	}
 	return
 }
+
+ReadOptionsFromIni()
+{
+	Global
+	IfNotExist, Config.ini
+	{
+		IniWrite, 10, Config.ini, Windows, BorderHor
+		IniWrite, 10, Config.ini, Windows, BorderVert
+		IniWrite, 10, Config.ini, Windows, PaddingHor
+		IniWrite, 10, Config.ini, Windows, PaddingVert
+	
+		IniWrite, 1, Config.ini, Settings, InitialPortWindows
+	}
+	IniRead, BorderHor, Config.ini, Windows, BorderHor
+	IniRead, BorderVert, Config.ini, Windows, BorderVert
+	IniRead, PaddingHor, Config.ini, Windows, PaddingHor
+	IniRead, PaddingVert, Config.ini, Windows, PaddingVert
+	
+	IniRead, InitialPortWindows, Config.ini, Settings, InitialPortWindows
+}
+
 CreateWindows(){
 	global
 	local tempid, tempTitle, tempclass
@@ -213,22 +279,6 @@ SearchAndDestroyWindow(WindowID)
 }
 
 
-Ship(monitor){
-	global
-	local tempWin, tempNum
-	
-	tempNum := monitor.NumberWindows
-	Loop, %tempNum%
-	{	
-		tempWin := monitor.Windows[A_index]
-		; Move Windows in the Ports
-		if(A_Index<=1){
-			WinMove, ahk_id %tempWin%,, monitor.LeftX, monitor.TopY, 2*monitor.Width/3, monitor.Height
-		} else {
-			WinMove, ahk_id %tempWin%,, monitor.LeftX + (2*monitor.Width/3), monitor.TopY + (monitor.UsableHeight/(monitor.NumberWindows - 1))*(A_Index-2), monitor.Width/3, monitor.UsableHeight/(monitor.NumberWindows-1)
-		}
-	}
-}
 
 ShellMessage(wParam, lParam){
 	Global
@@ -238,16 +288,16 @@ ShellMessage(wParam, lParam){
 		temp := DetectMonitorWindow(lParam)
 		tempmon := mon%temp%
 		SendWindowToMonitorArray(lParam)
-		Ship(tempmon)
+		tempmon.Ship()
 	} else if(wParam = 4 || wParam = 3 || wParam = 6){
 		;Window active
 		temp := DetectMonitorWindow(lParam)
 		tempmon := mon%temp%
-		Ship(tempmon)
+		tempmon.Ship()
 	} else if(wParam = 2){
 		temp := DetectMonitorWindow(lParam)
-		tempmon := mon%temp%
-		Ship(SearchAndDestroyWindow(lParam))
+		tempmon := SearchAndDestroyWindow(lParam)
+		tempmon.Ship()
 	}
 	return
 }

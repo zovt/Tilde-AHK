@@ -13,7 +13,7 @@ CreateWindows()
 SendAllWindowsToMonitorArray()
 Loop, %numMonitors%
 {
-	Ship(mon%A_Index%)
+	mon%A_Index%.Ship()
 }
 DllCall("RegisterShellHookWindow", UInt, WinExist())
 MsgNum := DllCall("RegisterWindowMessage",Str,"SHELLHOOK")
@@ -25,7 +25,7 @@ Return
 #O::
 	curmon := DetectMonitorMouse()
 	tempMon := mon%curmon%
-	Ship(tempMon)
+	tempMon.Ship()
 Return
 
 #J::
@@ -38,7 +38,7 @@ Return
 	actWin := WinExist("A")
 	tempMon := mon%curmon%
 	tempMon.Swap(actWin, 1)
-	Ship(tempMon)
+	tempMon.Ship()
 Return
 
 #Numpad2::
@@ -46,7 +46,7 @@ Return
 	actWin := WinExist("A")
 	tempMon := mon%curmon%
 	tempMon.Swap(actWin, 2)
-	Ship(tempMon)
+	tempMon.Ship()
 Return
 
 #Numpad3::
@@ -54,7 +54,7 @@ Return
 	actWin := WinExist("A")
 	tempMon := mon%curmon%
 	tempMon.Swap(actWin, 3)
-	Ship(tempMon)
+	tempMon.Ship()
 Return
 
 #Numpad4::
@@ -62,7 +62,7 @@ Return
 	actWin := WinExist("A")
 	tempMon := mon%curmon%
 	tempMon.Swap(actWin, 4)
-	Ship(tempMon)
+	tempMon.Ship()
 Return
 
 #Numpad5::
@@ -70,7 +70,7 @@ Return
 	actWin := WinExist("A")
 	tempMon := mon%curmon%
 	tempMon.Swap(actWin, 5)
-	Ship(tempMon)
+	tempMon.Ship()
 Return
 
 #Numpad6::
@@ -78,7 +78,7 @@ Return
 	actWin := WinExist("A")
 	tempMon := mon%curmon%
 	tempMon.Swap(actWin, 6)
-	Ship(tempMon)
+	tempMon.Ship()
 Return
 
 #Numpad7::
@@ -86,7 +86,7 @@ Return
 	actWin := WinExist("A")
 	tempMon := mon%curmon%
 	tempMon.Swap(actWin, 7)
-	Ship(tempMon)
+	tempMon.Ship()
 Return
 
 #Numpad8::
@@ -94,7 +94,7 @@ Return
 	actWin := WinExist("A")
 	tempMon := mon%curmon%
 	tempMon.Swap(actWin, 8)
-	Ship(tempMon)
+	tempMon.Ship()
 Return
 
 #Numpad9::
@@ -102,5 +102,21 @@ Return
 	actWin := WinExist("A")
 	tempMon := mon%curmon%
 	tempMon.Swap(actWin, 9)
-	Ship(tempMon)
+	tempMon.Ship()
+Return
+
+#NumpadAdd::
+	curmon := DetectMonitorMouse()
+	actWin := WinExist("A")
+	tempMon := mon%curmon%
+	tempMon.WindowsInPort := tempMon.WindowsInPort + 1
+	tempMon.Ship()
+Return
+
+#NumpadSub::
+	curmon := DetectMonitorMouse()
+	actWin := WinExist("A")
+	tempMon := mon%curmon%
+	tempMon.WindowsInPort := tempMon.WindowsInPort - 1
+	tempMon.Ship()
 Return

@@ -44,6 +44,21 @@ class Monitor{
 		}
 		MsgBox, % String
 	}
+	
+	Swap(IDToMove, positionToMoveTo){
+		temp := this.Windows[positionToMoveTo]
+		temp2 := this.NumberWindows
+		Loop, %temp2%
+		{
+			temp3 := this.Windows[A_Index]
+			if(temp3 = IDToMove)
+			{
+				this.Windows[positionToMoveTo] := temp3
+				this.Windows[A_Index] := temp
+				return 1
+			}
+		}
+	}
 }
 
 class Window{

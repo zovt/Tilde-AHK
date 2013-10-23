@@ -21,26 +21,86 @@ OnMessage(MsgNum, "ShellMessage")
 Return
 
 #A::DebugBox()
-#;::ToggleWindowBorders(A)
+
 #O::
 	curmon := DetectMonitorMouse()
-	Ship(curmon)
+	tempMon := mon%curmon%
+	Ship(tempMon)
 Return
-#Q::createWindows()
 
-#'::CloseWindow()
-#,::
-	WinGet, TempWin, ID, A
-	curWinMon := DetectMonitorWindow(TempWin)
-Return
-#E::
-	WinGet, TempWin, ID, A
-	SendWindowToMonitorArray(TempWin)
-Return
 #J::
 	curmon := DetectMonitorMouse()
 	mon%curmon%.details()
 Return
 
+#Numpad1::
+	curmon := DetectMonitorMouse()
+	actWin := WinExist("A")
+	tempMon := mon%curmon%
+	tempMon.Swap(actWin, 1)
+	Ship(tempMon)
+Return
 
-;#o::CountWindowsPerMonitor()
+#Numpad2::
+	curmon := DetectMonitorMouse()
+	actWin := WinExist("A")
+	tempMon := mon%curmon%
+	tempMon.Swap(actWin, 2)
+	Ship(tempMon)
+Return
+
+#Numpad3::
+	curmon := DetectMonitorMouse()
+	actWin := WinExist("A")
+	tempMon := mon%curmon%
+	tempMon.Swap(actWin, 3)
+	Ship(tempMon)
+Return
+
+#Numpad4::
+	curmon := DetectMonitorMouse()
+	actWin := WinExist("A")
+	tempMon := mon%curmon%
+	tempMon.Swap(actWin, 4)
+	Ship(tempMon)
+Return
+
+#Numpad5::
+	curmon := DetectMonitorMouse()
+	actWin := WinExist("A")
+	tempMon := mon%curmon%
+	tempMon.Swap(actWin, 5)
+	Ship(tempMon)
+Return
+
+#Numpad6::
+	curmon := DetectMonitorMouse()
+	actWin := WinExist("A")
+	tempMon := mon%curmon%
+	tempMon.Swap(actWin, 6)
+	Ship(tempMon)
+Return
+
+#Numpad7::
+	curmon := DetectMonitorMouse()
+	actWin := WinExist("A")
+	tempMon := mon%curmon%
+	tempMon.Swap(actWin, 7)
+	Ship(tempMon)
+Return
+
+#Numpad8::
+	curmon := DetectMonitorMouse()
+	actWin := WinExist("A")
+	tempMon := mon%curmon%
+	tempMon.Swap(actWin, 8)
+	Ship(tempMon)
+Return
+
+#Numpad9::
+	curmon := DetectMonitorMouse()
+	actWin := WinExist("A")
+	tempMon := mon%curmon%
+	tempMon.Swap(actWin, 9)
+	Ship(tempMon)
+Return

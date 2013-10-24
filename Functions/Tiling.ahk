@@ -159,7 +159,7 @@ Configure(){
 	global
 
 	titlesOn := 1
-	ignoreList := "Shell_SecondaryTrayWnd, Shell_TrayWnd, EdgeUiInputTopWndClass, WorkerW, Progman"
+	ignoreList := "Shell_SecondaryTrayWnd, Shell_TrayWnd, EdgeUiInputTopWndClass, WorkerW, Progman, Launchy"
 	
 	ReadOptionsFromIni()
 	
@@ -296,7 +296,7 @@ SearchAndDestroyWindow(WindowID)
 				temp3 := A_Index
 				Loop, %temp2%
 				{
-					monitor.Windows[temp3+A_Index-temp2] := monitor.Windows[temp3+A_Index]
+					monitor.Windows[temp3+(A_Index-1)] := monitor.Windows[temp3+A_Index]
 				}
 				monitor.Windows[temp] := ""
 				monitor.NumberWindows := temp - 1

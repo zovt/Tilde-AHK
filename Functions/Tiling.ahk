@@ -105,7 +105,7 @@ class Monitor{
 		PortWindowSizeHorizontal := 2*(this.UsableWidth - (tempHorPad))/3
 		PortWindowVerticalMovement := PortWindowSizeVertical+tempVertPad
 		DeckWindowSizeVertical := (this.UsableHeight - (tempN - 1)*tempVertPad)/tempN
-		DeckWindowSizeHorizontal := (this.UsableWidth - tempHorBor - (tempHorPad))/3
+		DeckWindowSizeHorizontal := (this.UsableWidth - (tempHorPad))/3
 		DeckWindowVerticalMovement := DeckWindowSizeVertical+tempVertPad
 		DeckWindowHorizontalMovement := PortWindowSizeHorizontal + tempHorPad
 	
@@ -117,7 +117,7 @@ class Monitor{
 			{
 				WinMove, ahk_id %tempWin%,, this.LeftX + tempHorBor, this.TopY + tempVertBor + PortWindowVerticalMovement*(A_Index - 1), PortWindowSizeHorizontal, PortWindowSizeVertical
 			} else {
-				WinMove, ahk_id %tempWin%,, this.LeftX + tempHorBor + DeckWindowHorizontalMovement, this.TopY + tempVertBor + DeckWindowVerticalMovement*(A_Index-tempPW-1), this.UsableWidth/3, DeckWindowSizeVertical
+				WinMove, ahk_id %tempWin%,, this.LeftX + tempHorBor + DeckWindowHorizontalMovement, this.TopY + tempVertBor + DeckWindowVerticalMovement*(A_Index-tempPW-1), DeckWindowSizeHorizontal, DeckWindowSizeVertical
 			}
 		}
 	}

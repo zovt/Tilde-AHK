@@ -9,6 +9,8 @@ Tilde will create a Config.ini for you upon first run in the folder it is locate
 Usage
 =====
 Numpad1-Numpad9: Swap a selected window with the window located in the position specified with the numpad
+NumpadAdd: Increase the number of windows in the port
+NumpadSub: Decrease the number of windows in the port
 NumpadDot: Close window
 NumpadEnter: Send window to next monitor
 

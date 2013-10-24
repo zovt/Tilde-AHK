@@ -9,6 +9,7 @@ Tilde will create a Config.ini for you upon first run in the folder it is locate
 Terminology
 =====
 Port: The area on the left side of the monitor which contains the main, larger windows
+
 Deck: The area on the right side of the monitor which all other windows are located
 
 Usage

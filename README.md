@@ -1,11 +1,16 @@
 Tilde
 =====
-
 A customizable tiling window manager written in AutoHotkey for Windows
 
 Configuration
 =====
 Tilde will create a Config.ini for you upon first run in the folder it is located. Inside are all of the options that can be changed. If you wish to create a new config file, simply delete Config.ini
+
+Usage
+=====
+Numpad1-Numpad9: Swap a selected window with the window located in the position specified with the numpad
+NumpadDot: Close window
+NumpadEnter: Send window to next monitor
 
 Todo
 =====

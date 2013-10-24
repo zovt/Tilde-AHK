@@ -14,15 +14,15 @@ Deck: The area on the right side of the monitor which all other windows are loca
 
 Usage
 =====
-#Numpad1-Numpad9: Swap a selected window with the window located in the position specified with the numpad
+\#Numpad1-Numpad9: Swap a selected window with the window located in the position specified with the numpad
 
-#NumpadAdd: Increase the number of windows in the port
+\#NumpadAdd: Increase the number of windows in the port
 
-#NumpadSub: Decrease the number of windows in the port
+\#NumpadSub: Decrease the number of windows in the port
 
-#NumpadDot: Close window
+\#NumpadDot: Close window
 
-#NumpadEnter: Send window to next monitor
+\#NumpadEnter: Send window to next monitor
 
 Todo
 =====

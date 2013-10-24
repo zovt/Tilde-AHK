@@ -6,6 +6,11 @@ Configuration
 =====
 Tilde will create a Config.ini for you upon first run in the folder it is located. Inside are all of the options that can be changed. If you wish to create a new config file, simply delete Config.ini
 
+Terminology
+=====
+Port: The area on the left side of the monitor which contains the main, larger windows
+Deck: The area on the right side of the monitor which all other windows are located
+
 Usage
 =====
 Numpad1-Numpad9: Swap a selected window with the window located in the position specified with the numpad

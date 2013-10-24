@@ -68,6 +68,7 @@ class Monitor{
 			}
 		}
 	}
+	
 	SendWindowToMonitor(tempID, monitor)
 	{
 		temp := this.NumberWindows
@@ -79,7 +80,12 @@ class Monitor{
 					temp3 := monitor.NumberWindows
 					monitor.Windows[temp3+1] := tempID
 					monitor.NumberWindows += 1
-					this.Windows[A_Index] := ""
+					temp4 := this.NumberWindows - A_Index
+					temp5 := A_Index
+					Loop, %temp4%
+					{
+						this.Windows[temp5+(A_Index-1)] := this.Windows[temp5+(A_Index)]
+					}
 					this.NumberWindows -= 1
 					this.Ship()
 					monitor.Ship()

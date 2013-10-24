@@ -68,6 +68,25 @@ class Monitor{
 			}
 		}
 	}
+	SendWindowToMonitor(tempID, monitor)
+	{
+		temp := this.NumberWindows
+		Loop, %temp%
+		{
+			temp2 := this.Windows[A_Index]
+			if(tempID = temp2)
+			{
+					temp3 := monitor.NumberWindows
+					monitor.Windows[temp3+1] := tempID
+					monitor.NumberWindows += 1
+					this.Windows[A_Index] := ""
+					this.NumberWindows -= 1
+					this.Ship()
+					monitor.Ship()
+					return 1
+			}
+		}
+	}
 	
 	Ship()
 	{
@@ -86,7 +105,7 @@ class Monitor{
 		PortWindowSizeHorizontal := 2*(this.UsableWidth - (tempHorPad))/3
 		PortWindowVerticalMovement := PortWindowSizeVertical+tempVertPad
 		DeckWindowSizeVertical := (this.UsableHeight - (tempN - 1)*tempVertPad)/tempN
-		DeckWindowSizeHorizontal := (this.UsableWidth - (tempHorPad))/3
+		DeckWindowSizeHorizontal := (this.UsableWidth - tempHorBor - (tempHorPad))/3
 		DeckWindowVerticalMovement := DeckWindowSizeVertical+tempVertPad
 		DeckWindowHorizontalMovement := PortWindowSizeHorizontal + tempHorPad
 	
@@ -112,18 +131,19 @@ class Window{
 		this.Title := 1
 		this.OnTop := 0
 		this.Initialized := 1
+		
+		this.titleAway(WindowTitlesOn)
 	}
 	
-	titleAway(Force = 0){
+	titleAway(Bool){
 		temp := this.Hwnd
-		if(this.Title = 1 && Force = 0){
+		if(Bool = 0 && Title = 1)
+		{
 			WinSet, Style, -0xC00000, ahk_id %temp%
 			WinSet, Style, -0x800000, ahk_id %temp%
-			this.Title := 0
-		} else {
+		} Else {
 			WinSet, Style, +0xC00000, ahk_id %temp%
 			WinSet, Style, +0x800000, ahk_id %temp%
-			This.Title := 1
 		}
 		WinSet, Redraw,, ahk_id %temp%
 	}
@@ -163,6 +183,7 @@ ReadOptionsFromIni()
 		IniWrite, 10, Config.ini, Windows, PaddingVert
 	
 		IniWrite, 1, Config.ini, Settings, InitialPortWindows
+		IniWrite, 1, Config.ini, Settings, WindowTitlesOn
 	}
 	IniRead, BorderHor, Config.ini, Windows, BorderHor
 	IniRead, BorderVert, Config.ini, Windows, BorderVert
@@ -170,6 +191,7 @@ ReadOptionsFromIni()
 	IniRead, PaddingVert, Config.ini, Windows, PaddingVert
 	
 	IniRead, InitialPortWindows, Config.ini, Settings, InitialPortWindows
+	IniRead, WindowTitlesOn, Config.ini, Settings, WindowTitlesOn
 }
 
 CreateWindows(){
@@ -193,7 +215,7 @@ CreateWindows(){
 		if(tempTitle != ""){
 			ifNotInString, ignoreList, %tempclass%
 			{
-				windowArray[A_Index] := new window(tempid, titlesOn)
+				windowArray[A_Index] := new Window(tempid, titlesOn)
 			}
 		}
 	}
@@ -287,6 +309,7 @@ ShellMessage(wParam, lParam){
 		;Window Created
 		temp := DetectMonitorWindow(lParam)
 		tempmon := mon%temp%
+		tempWindow := new Window(lParam, titlesOn)
 		SendWindowToMonitorArray(lParam)
 		tempmon.Ship()
 	} else if(wParam = 4 || wParam = 3 || wParam = 6){

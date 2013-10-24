@@ -120,3 +120,20 @@ Return
 	tempMon.WindowsInPort := tempMon.WindowsInPort - 1
 	tempMon.Ship()
 Return
+
+#NumpadEnter::
+	curmon := DetectMonitorMouse()
+	actWin := WinExist("A")
+	tempMon := mon%curmon%
+	if(curmon+1>numMonitors){
+		nextMon := mon1
+	} else {
+		temp := curmon+1
+		nextMon := mon%temp%
+	}
+	tempMon.SendWindowToMonitor(actWin, nextMon)
+return
+
+#NumpadDot::
+	WinClose,A
+return

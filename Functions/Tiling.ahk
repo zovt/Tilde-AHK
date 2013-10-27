@@ -127,6 +127,27 @@ class Monitor{
 			}
 		}
 	}
+	
+	AddFakeWindow()
+	{
+		this.NumberWindows += 1
+	}
+	
+	RemoveFakeWindows()
+	{
+		tempNum := this.NumberWindows
+		Loop, %tempNum%
+		{
+			tempID := this.Windows[A_Index]
+			If %tempID%
+			{
+				; Do Nothing
+			} else {
+				this.Windows[A_Index] := this.Windows[A_Index+1]
+				this.NumberWindows -= 1
+			}
+		}
+	}
 }
 
 class Window{
@@ -147,9 +168,11 @@ class Window{
 		{
 			WinSet, Style, -0xC00000, ahk_id %temp%
 			WinSet, Style, -0x800000, ahk_id %temp%
+			Title := 0
 		} Else {
 			WinSet, Style, +0xC00000, ahk_id %temp%
 			WinSet, Style, +0x800000, ahk_id %temp%
+			Title := 1
 		}
 		WinSet, Redraw,, ahk_id %temp%
 	}

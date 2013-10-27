@@ -141,3 +141,17 @@ return
 #NumpadMult::
 	Reload
 return
+
+#Numpad0::
+	curmon := DetectMonitorMouse()
+	tempMon := mon%curmon%
+	tempMon.AddFakeWindow()
+	tempMon.Ship()
+return
+
+#^NumpadDot::
+	curmon := DetectMonitorMouse()
+	tempMon := mon%curmon%
+	tempMon.RemoveFakeWindows()
+	tempMon.Ship()
+Return

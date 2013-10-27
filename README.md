@@ -24,6 +24,10 @@ Usage
 
 \#NumpadEnter: Send window to next monitor
 
+\#NumpadMult: Reload script
+
+\#Numpad0: Create fake window
+
 Todo
 =====
 - [x] Make the Repo!

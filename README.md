@@ -28,6 +28,8 @@ Usage
 
 \#Numpad0: Create fake window
 
+\^\#NumpadDot: Remove fake windows *BUGGY*
+
 Todo
 =====
 - [x] Make the Repo!

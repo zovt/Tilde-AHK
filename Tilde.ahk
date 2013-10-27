@@ -137,3 +137,7 @@ return
 #NumpadDot::
 	WinClose,A
 return
+
+#NumpadMult::
+	Reload
+return

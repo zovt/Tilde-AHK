@@ -121,9 +121,9 @@ class Monitor{
 			; Move Windows in the Ports
 			if(A_Index<=tempPW)
 			{
-				WinMove, ahk_id %tempWin%,, this.LeftX + tempHorBor, this.TopY + tempVertBor + PortWindowVerticalMovement*(A_Index - 1), PortWindowSizeHorizontal, PortWindowSizeVertical
+				WinMove, ahk_id %tempWin%,, this.LeftX + tempHorBor, this.TopY + ToolbarPaddingTop + tempVertBor + PortWindowVerticalMovement*(A_Index - 1), PortWindowSizeHorizontal, PortWindowSizeVertical
 			} else {
-				WinMove, ahk_id %tempWin%,, this.LeftX + tempHorBor + DeckWindowHorizontalMovement, this.TopY + tempVertBor + DeckWindowVerticalMovement*(A_Index-tempPW-1), DeckWindowSizeHorizontal, DeckWindowSizeVertical
+				WinMove, ahk_id %tempWin%,, this.LeftX + tempHorBor + DeckWindowHorizontalMovement, this.TopY + tempVertBor + ToolbarPaddingTop + DeckWindowVerticalMovement*(A_Index-tempPW-1), DeckWindowSizeHorizontal, DeckWindowSizeVertical
 			}
 		}
 	}
@@ -159,17 +159,17 @@ Configure(){
 	global
 
 	titlesOn := 1
-	ignoreList := "Shell_SecondaryTrayWnd, Shell_TrayWnd, EdgeUiInputTopWndClass, WorkerW, Progman, Launchy"
+	ignoreList := "Shell_SecondaryTrayWnd, Shell_TrayWnd, EdgeUiInputTopWndClass, WorkerW, Progman, Launchy, Valve001"
 	
 	ReadOptionsFromIni()
 	
 	SysGet, numMonitors, MonitorCount
 	Loop, %numMonitors%
 	{
-		topTaskbar := 0
-		bottomTaskbar := 0
-		rightTaskbar := 0
-		leftTaskbar := 0
+		topTaskbar := ToolbarPaddingTop
+		bottomTaskbar := ToolbarPaddingBot
+		rightTaskbar := ToolbarPaddingRight
+		leftTaskbar := ToolbarPaddingLeft
 		
 		SysGet, mon, Monitor, %A_Index%
 		mon%A_Index% := new Monitor(monLeft, monTop, monRight, monBottom, leftTaskbar, rightTaskbar, topTaskbar, bottomTaskbar, BorderHor, BorderVert, PaddingHor, PaddingVert, InitialPortWindows)
@@ -190,6 +190,11 @@ ReadOptionsFromIni()
 	
 		IniWrite, 1, Config.ini, Settings, InitialPortWindows
 		IniWrite, 1, Config.ini, Settings, WindowTitlesOn
+		
+		IniWrite, 0, Config.ini, Settings, ToolbarPaddingTop
+		IniWrite, 0, Config.ini, Settings, ToolbarPaddingBot
+		IniWrite, 0, Config.ini, Settings, ToolbarPaddingLeft
+		IniWrite, 0, Config.ini, Settings, ToolbarPaddingRight
 	}
 	IniRead, BorderHor, Config.ini, Windows, BorderHor
 	IniRead, BorderVert, Config.ini, Windows, BorderVert
@@ -198,6 +203,11 @@ ReadOptionsFromIni()
 	
 	IniRead, InitialPortWindows, Config.ini, Settings, InitialPortWindows
 	IniRead, WindowTitlesOn, Config.ini, Settings, WindowTitlesOn
+	
+	IniRead, ToolbarPaddingTop, Config.ini, Settings, ToolbarPaddingTop
+	IniRead, ToolbarPaddingBot, Config.ini, Settings, ToolbarPaddingBot
+	IniRead, ToolbarPaddingLeft, Config.ini, Settings, ToolbarPaddingLeft
+	IniRead, ToolbarPaddingRight, Config.ini, Settings, ToolbarPaddingRight
 }
 
 CreateWindows(){
